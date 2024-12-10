@@ -46,10 +46,15 @@ func (f *Floor) updateGridFloor(topLeftX, topLeftY int) {
 // la version actuelle recopie fullContent dans content, ce qui n'est pas
 // le comportement attendu dans le rendu du projet
 func (f *Floor) updateFromFileFloor(topLeftX, topLeftY int) {
+
 	for y := 0; y < len(f.content); y++ {
 		for x := 0; x < len(f.content[y]); x++ {
-			if y < len(f.fullContent) && x < len(f.fullContent[y]) {
-				f.content[y][x] = f.fullContent[y][x]
+			absX := topLeftX + x
+			absY := topLeftY + y
+
+			if absY >= 0 && absY < len(f.fullContent) && absX >= 0 && absX < len(f.fullContent[absY]) {
+
+				f.content[y][x] = f.fullContent[absY][absX]
 			} else {
 				f.content[y][x] = -1
 			}
