@@ -11,7 +11,7 @@ import (
 )
 
 // Init initialise les structures de données internes de f.
-// hhjb
+
 func (f *Floor) Init() {
 	f.content = make([][]int, configuration.Global.NumTileY)
 	for y := 0; y < len(f.content); y++ {
@@ -58,5 +58,6 @@ func readFloorFromFile(fileName string) (floorContent [][]int) {
 		}
 
 	}
+
 	return floorContent
 }

@@ -1,14 +1,15 @@
 package quadtree
 
+//crée le quadtree à partir du tableau floorcontent qui représente l'ensemble du terrain
 func MakeFromArray(floorContent [][]int) (q Quadtree) {
 
 	/* initialise la taille du terrain avec height et width */
 
 	height := len(floorContent)
 	width := len(floorContent[0])
-
+	// Création du noeud racine du quadtree
 	root := creanode(floorContent, 0, 0, height, width)
-
+	// Retourner le quadtree avec la racine et les dimensions
 	return Quadtree{
 		height: height,
 		width:  width,
@@ -19,7 +20,7 @@ func MakeFromArray(floorContent [][]int) (q Quadtree) {
 func creanode(floorContent [][]int, topLeftX int, topLeftY int, height int, width int) *node {
 
 	/*les 2 if vérifient si le noeud est une leaf. Dans ces cas la condition leaf de &node (le noeud) est à True*/
-
+	//Si la zone fait 1x1, on crée une feuille (leaf)
 	if height == 1 && width == 1 { /* regarde si le terrain fais 1x1*/
 		return &node{
 			topLeftX: topLeftX,
@@ -30,7 +31,7 @@ func creanode(floorContent [][]int, topLeftX int, topLeftY int, height int, widt
 			isLeaf:   true,
 		}
 	}
-
+	// Si la zone est homogène (toutes les valeurs sont identiques), on crée une feuille
 	if isHomogeneous(floorContent, topLeftX, topLeftY, height, width) { /*regarde si toutes les cases comportent la meme valeur*/
 		return &node{
 			topLeftX: topLeftX,
@@ -42,6 +43,7 @@ func creanode(floorContent [][]int, topLeftX int, topLeftY int, height int, widt
 		}
 	}
 
+	//si ce n'est pas une leaf, on divise la zone en 4 sous-noeuds
 	/* divise le terrain en deux en fonction de la ou est le noeud */
 
 	midHeight := topLeftY + height/2
@@ -70,13 +72,19 @@ func creanode(floorContent [][]int, topLeftX int, topLeftY int, height int, widt
 }
 
 func isHomogeneous(floorContent [][]int, topLeftX, topLeftY, height, width int) bool {
-	value := floorContent[topLeftY][topLeftX]     /* on prend la valeur de la première case et on regarde si toutes les autres sont égaux ou non */
-	for y := topLeftY; y < topLeftY+height; y++ { /* important de garder les valeurs de topleft pour garder la position du noeud par rapport au terrain */
+	// On prend la valeur de la première case pour la comparaison
+	value := floorContent[topLeftY][topLeftX]
+
+	// On parcourt les lignes de la sous-grille
+	for y := topLeftY; y < topLeftY+height; y++ {
+		// On parcourt les colonnes de la sous-grille
 		for x := topLeftX; x < topLeftX+width; x++ {
+			// Si on trouve une valeur différente, on retourne false immédiatement
 			if floorContent[y][x] != value {
 				return false
 			}
 		}
 	}
+	// Si on n'a trouvé aucune différence, la zone est homogène
 	return true
 }

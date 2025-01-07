@@ -6,12 +6,13 @@ package quadtree
 
 func (q Quadtree) GetContent(topLeftX, topLeftY int, contentHolder [][]int) {
 
+	// initialisation à -1 pour le remplir
 	for i := range contentHolder {
 		for j := range contentHolder[i] {
 			contentHolder[i][j] = -1
 		}
 	}
-
+	// appel de la fonction pour emplir le tableau
 	q.getContentRecursive(q.root, topLeftX, topLeftY, contentHolder)
 
 }
@@ -20,12 +21,14 @@ func (q Quadtree) getContentRecursive(n *node, topLeftX, topLeftY int, contentHo
 	if n == nil {
 		return
 	}
+	// sert à savoir si le noeud est dans la zone d'intérêt
 
 	if n.topLeftX+n.width <= topLeftX || n.topLeftY+n.height <= topLeftY ||
 		n.topLeftX >= topLeftX+len(contentHolder[0]) || n.topLeftY >= topLeftY+len(contentHolder) {
 		return
 	}
-
+	//si feuille, les coordonnées sont déterminées avec le min et le max
+	//si pas feuille, chercher plus loin les sous-noeuds
 	if n.isLeaf {
 
 		startY := max(n.topLeftY, topLeftY)
@@ -47,6 +50,7 @@ func (q Quadtree) getContentRecursive(n *node, topLeftX, topLeftY int, contentHo
 	}
 }
 
+//fonctions utilisées pour calculer les limites de la zone d'intersection entre le noeud et la zone visible
 func min(a, b int) int {
 	if a < b {
 		return a

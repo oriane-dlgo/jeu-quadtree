@@ -48,7 +48,10 @@ func (f *Floor) updateGridFloor(topLeftX, topLeftY int) {
 func (f *Floor) updateFromFileFloor(topLeftX, topLeftY int) {
 
 	for y := 0; y < len(f.content); y++ {
+		//modif
 		for x := 0; x < len(f.content[y]); x++ {
+
+			//création valeurs absolues x et y pour prendre les valeurs sur un tableau plus grand
 			absX := topLeftX + x
 			absY := topLeftY + y
 
@@ -56,6 +59,7 @@ func (f *Floor) updateFromFileFloor(topLeftX, topLeftY int) {
 
 				f.content[y][x] = f.fullContent[absY][absX]
 			} else {
+				// si les valeurs sont en dehors du grand tableau, alors on defini sur -1 pour représenter le vide
 				f.content[y][x] = -1
 			}
 		}
