@@ -16,9 +16,9 @@ import (
 func (f *Floor) Update(camXPos, camYPos int) {
 	// Générer le terrain aléatoire si activé et non encore généré
 	if configuration.Global.EnableRandomTerrain && !f.randomFloorGenerated {
-		width := configuration.Global.NumTileX * 2 // Taille donnée (double de la taille d'affichage pour l'exemple)
+		width := configuration.Global.NumTileX * 2
 		height := configuration.Global.NumTileY * 2
-		soilTypes := 6 // 5 types de sols différents
+		soilTypes := 6
 		f.GenerateRandomFloor(width, height, soilTypes)
 	}
 
@@ -72,12 +72,5 @@ func (f *Floor) updateFromFileFloor(topLeftX, topLeftY int) {
 
 // le sol est récupéré depuis un quadtree, qui a été lu dans un fichier
 func (f *Floor) updateQuadtreeFloor(topLeftX, topLeftY int) {
-	fmt.Println("updateQuadtreeFloor called with topLeftX:", topLeftX, "topLeftY:", topLeftY)
-	for y := 0; y < len(f.content); y++ {
-		for x := 0; x < len(f.content[y]); x++ {
-			absX := topLeftX + x
-			absY := topLeftY + y
-			f.content[y][x] = f.quadtreeContent.GetValue(absX, absY)
-		}
-	}
+	f.quadtreeContent.GetContent(topLeftX, topLeftY, f.content)
 }
