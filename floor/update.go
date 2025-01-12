@@ -1,6 +1,8 @@
 package floor
 
 import (
+	"fmt"
+
 	"gitlab.univ-nantes.fr/jezequel-l/quadtree/configuration"
 )
 
@@ -12,8 +14,20 @@ import (
 // On aurait pu se passer de cette fonction et tout faire dans Draw.
 // Mais cela permet de découpler le calcul de l'affichage.
 func (f *Floor) Update(camXPos, camYPos int) {
+	// Générer le terrain aléatoire si activé et non encore généré
+	if configuration.Global.EnableRandomTerrain && !f.randomFloorGenerated {
+		width := configuration.Global.NumTileX * 2 // Taille donnée (double de la taille d'affichage pour l'exemple)
+		height := configuration.Global.NumTileY * 2
+		soilTypes := 6 // 5 types de sols différents
+		f.GenerateRandomFloor(width, height, soilTypes)
+	}
+
 	topLeftX := camXPos - configuration.Global.ScreenCenterTileX
 	topLeftY := camYPos - configuration.Global.ScreenCenterTileY
+
+	fmt.Println("Update called with camXPos:", camXPos, "camYPos:", camYPos)
+	fmt.Println("TopLeftX:", topLeftX, "TopLeftY:", topLeftY)
+
 	switch configuration.Global.FloorKind {
 	case GridFloor:
 		f.updateGridFloor(topLeftX, topLeftY)
@@ -22,21 +36,18 @@ func (f *Floor) Update(camXPos, camYPos int) {
 	case QuadTreeFloor:
 		f.updateQuadtreeFloor(topLeftX, topLeftY)
 	}
+
+	fmt.Println("Terrain Content après mise à jour:", f.content)
 }
 
 // le sol est un quadrillage de tuiles d'herbe et de tuiles de désert
 func (f *Floor) updateGridFloor(topLeftX, topLeftY int) {
+	fmt.Println("updateGridFloor called with topLeftX:", topLeftX, "topLeftY:", topLeftY)
 	for y := 0; y < len(f.content); y++ {
 		for x := 0; x < len(f.content[y]); x++ {
-			absX := topLeftX
-			if absX < 0 {
-				absX = -absX
-			}
-			absY := topLeftY
-			if absY < 0 {
-				absY = -absY
-			}
-			f.content[y][x] = ((x + absX%2) + (y + absY%2)) % 2
+			absX := topLeftX + x
+			absY := topLeftY + y
+			f.content[y][x] = ((absX % 2) + (absY % 2)) % 2
 		}
 	}
 }
@@ -46,20 +57,13 @@ func (f *Floor) updateGridFloor(topLeftX, topLeftY int) {
 // la version actuelle recopie fullContent dans content, ce qui n'est pas
 // le comportement attendu dans le rendu du projet
 func (f *Floor) updateFromFileFloor(topLeftX, topLeftY int) {
-
 	for y := 0; y < len(f.content); y++ {
-		//modif
 		for x := 0; x < len(f.content[y]); x++ {
-
-			//création valeurs absolues x et y pour prendre les valeurs sur un tableau plus grand
 			absX := topLeftX + x
 			absY := topLeftY + y
-
 			if absY >= 0 && absY < len(f.fullContent) && absX >= 0 && absX < len(f.fullContent[absY]) {
-
 				f.content[y][x] = f.fullContent[absY][absX]
 			} else {
-				// si les valeurs sont en dehors du grand tableau, alors on defini sur -1 pour représenter le vide
 				f.content[y][x] = -1
 			}
 		}
@@ -68,5 +72,12 @@ func (f *Floor) updateFromFileFloor(topLeftX, topLeftY int) {
 
 // le sol est récupéré depuis un quadtree, qui a été lu dans un fichier
 func (f *Floor) updateQuadtreeFloor(topLeftX, topLeftY int) {
-	f.quadtreeContent.GetContent(topLeftX, topLeftY, f.content)
+	fmt.Println("updateQuadtreeFloor called with topLeftX:", topLeftX, "topLeftY:", topLeftY)
+	for y := 0; y < len(f.content); y++ {
+		for x := 0; x < len(f.content[y]); x++ {
+			absX := topLeftX + x
+			absY := topLeftY + y
+			f.content[y][x] = f.quadtreeContent.GetValue(absX, absY)
+		}
+	}
 }

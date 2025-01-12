@@ -11,9 +11,10 @@ import "gitlab.univ-nantes.fr/jezequel-l/quadtree/quadtree"
 //   - quadTreeContent : totalité du terrain sous forme de quadtree (utilisé
 //     avec le type d'affichage du terrain "quadtreeFloor")
 type Floor struct {
-	content         [][]int
-	fullContent     [][]int
-	quadtreeContent quadtree.Quadtree
+	content              [][]int
+	fullContent          [][]int
+	quadtreeContent      quadtree.Quadtree
+	randomFloorGenerated bool
 }
 
 // types d'affichage du terrain disponibles

@@ -44,6 +44,7 @@ type Configuration struct {
 	CameraMode                    int
 	FloorKind                     int
 	FloorFile                     string
+	EnableRandomTerrain           bool
 
 	ScreenWidth, ScreenHeight            int `json:"-"`
 	ScreenCenterTileX, ScreenCenterTileY int `json:"-"`

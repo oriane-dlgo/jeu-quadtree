@@ -90,3 +90,32 @@ func (n *node) checkAndGetAsText(shift, step int) (asText string) {
 	asText = n.getAsText(shift, step)
 	return
 }
+
+func NewQuadtree(x, y, width, height int) *Quadtree {
+	return &Quadtree{width: width, height: height, root: creanode(nil, x, y, height, width)}
+}
+
+func (qt *Quadtree) GetValue(x, y int) int {
+	if qt.root == nil {
+		return -1
+	}
+	return qt.root.getValue(x, y)
+}
+
+func (n *node) getValue(x, y int) int {
+	if n.isLeaf {
+		return n.content
+	}
+
+	if x < n.topLeftX+n.width/2 {
+		if y < n.topLeftY+n.height/2 {
+			return n.topLeftNode.getValue(x, y)
+		}
+		return n.bottomLeftNode.getValue(x, y)
+	} else {
+		if y < n.topLeftY+n.height/2 {
+			return n.topRightNode.getValue(x, y)
+		}
+		return n.bottomRightNode.getValue(x, y)
+	}
+}
