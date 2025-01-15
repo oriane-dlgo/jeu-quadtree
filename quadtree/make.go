@@ -15,6 +15,7 @@ func MakeFromArray(floorContent [][]int) (q Quadtree) {
 		width:  width,
 		root:   root,
 	}
+
 }
 
 func creanode(floorContent [][]int, topLeftX int, topLeftY int, height int, width int) *node {
