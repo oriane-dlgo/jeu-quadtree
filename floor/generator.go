@@ -45,7 +45,8 @@ func savefloor(floorgenerated [][]int, filename string) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer myFile.Close() // Assurez-vous que le fichier est fermé après utilisation
+
+	defer myFile.Close()
 
 	for _, value := range floorgenerated {
 		line := ""
@@ -54,7 +55,6 @@ func savefloor(floorgenerated [][]int, filename string) error {
 			if err != nil {
 				log.Fatal(err)
 			}
-
 		}
 		_, err = fmt.Fprintln(myFile, line)
 		if err != nil {

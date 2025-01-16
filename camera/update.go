@@ -24,6 +24,7 @@ func (c *Camera) updateStatic() {}
 // entiers qui indiquent les coordonnées du personnage et place
 // la caméra au même endroit.
 func (c *Camera) updateFollowCharacter(characterPosX, characterPosY int) {
+
 	c.X = characterPosX
 	c.Y = characterPosY
 }

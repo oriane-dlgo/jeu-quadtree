@@ -46,6 +46,7 @@ type Configuration struct {
 	FloorFile                     string
 	EnableRandomTerrain           bool
 	SaveFloorGenerated            bool
+	BlockWater                    bool
 
 	ScreenWidth, ScreenHeight            int `json:"-"`
 	ScreenCenterTileX, ScreenCenterTileY int `json:"-"`

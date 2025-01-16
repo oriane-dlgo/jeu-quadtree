@@ -10,6 +10,6 @@
     "FloorKind": 2,
     "FloorFile": "../floor-files/beaupasbeau",
     "EnableRandomTerrain": true,
-    "SaveFloorGenerated": true
-
+    "SaveFloorGenerated": false,
+    "BlockWater": true
 }
