@@ -1,8 +1,6 @@
 package floor
 
 import (
-	"fmt"
-
 	"gitlab.univ-nantes.fr/jezequel-l/quadtree/configuration"
 )
 
@@ -25,9 +23,6 @@ func (f *Floor) Update(camXPos, camYPos int) {
 	topLeftX := camXPos - configuration.Global.ScreenCenterTileX
 	topLeftY := camYPos - configuration.Global.ScreenCenterTileY
 
-	fmt.Println("Update called with camXPos:", camXPos, "camYPos:", camYPos)
-	fmt.Println("TopLeftX:", topLeftX, "TopLeftY:", topLeftY)
-
 	switch configuration.Global.FloorKind {
 	case GridFloor:
 		f.updateGridFloor(topLeftX, topLeftY)
@@ -37,12 +32,11 @@ func (f *Floor) Update(camXPos, camYPos int) {
 		f.updateQuadtreeFloor(topLeftX, topLeftY)
 	}
 
-	fmt.Println("Terrain Content après mise à jour:", f.content)
 }
 
 // le sol est un quadrillage de tuiles d'herbe et de tuiles de désert
 func (f *Floor) updateGridFloor(topLeftX, topLeftY int) {
-	fmt.Println("updateGridFloor called with topLeftX:", topLeftX, "topLeftY:", topLeftY)
+
 	for y := 0; y < len(f.content); y++ {
 		for x := 0; x < len(f.content[y]); x++ {
 			absX := topLeftX + x

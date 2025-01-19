@@ -6,10 +6,10 @@
     "NumCharacterAnimImages": 4,
     "NumFramePerCharacterAnimImage": 5,
     "NumTileForDebug": 6,
-    "CameraMode": 1,
+    "CameraMode": 2,
     "FloorKind": 2,
-    "FloorFile": "../floor-files/beaupasbeau",
+    "FloorFile": "../floor-files/validation",
     "EnableRandomTerrain": true,
     "SaveFloorGenerated": false,
-    "BlockWater": true
+    "BlockWater": false
 }

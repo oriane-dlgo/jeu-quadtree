@@ -24,6 +24,10 @@ const (
 	QuadTreeFloor
 )
 
+func (f *Floor) GetFullContent() [][]int {
+	return f.fullContent
+}
+
 // GetHeight retourne la hauteur (en cases) du terrain
 // à partir du tableau fullContent, en supposant que
 // ce tableau représente un terrain rectangulaire
