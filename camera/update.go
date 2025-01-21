@@ -75,8 +75,9 @@ func (c *Camera) updateblockborder(characterPosX, characterPosY int) {
 
 	// Vérifie que le personnage n'apparaisse pas sur un sol de type 5 et qu'il ne soit pas entouré d'eau (sol de type -1)
 	if fullContent[characterPosY][characterPosX] == 5 ||
+
 		fullContent[characterPosY][characterPosX] == -1 ||
-		(characterPosY > 0 && fullContent[characterPosY-1][characterPosX] == -1) ||
+		(characterPosY > 0 && fullContent[characterPosY-1][characterPosX] == 5) ||
 		(characterPosX < len(fullContent[0])-1 && fullContent[characterPosY][characterPosX+1] == -1) ||
 		(characterPosY < len(fullContent)-1 && fullContent[characterPosY+1][characterPosX] == -1) ||
 		(characterPosX > 0 && fullContent[characterPosY][characterPosX-1] == -1) {

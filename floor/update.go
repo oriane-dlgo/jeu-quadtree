@@ -32,6 +32,45 @@ func (f *Floor) Update(camXPos, camYPos int) {
 		f.updateQuadtreeFloor(topLeftX, topLeftY)
 	}
 
+	// Appelle la fonction WaterFramecount() pour incrémenter le compteur d'images d'eau
+	f.WaterFramecount()
+
+	// Si l'état de l'eau est actif, appelle la fonction d'animation de l'eau
+	if f.WaterState {
+		f.WaterAnimation()
+	}
+
+}
+
+// Parcours la Matrice et change les 5 en 6 et inversement (ce sont les 2 textures de l'animation de l'eau)
+func (f Floor) WaterAnimation() {
+	for y := 0; y < len(f.content); y++ {
+		for x := 0; x < len(f.content[y]); x++ {
+			// Change les cellules de la matrice contenant 5 en 6
+			if f.content[y][x] == 5 {
+				f.content[y][x] = 6
+				// Change les cellules de la matrice contenant 6 en 5
+			} else if f.content[y][x] == 6 {
+				f.content[y][x] = 5
+			}
+		}
+	}
+}
+
+// Incrémente le compteur d'images d'eau
+func (f *Floor) WaterFramecount() {
+	f.WaterFrameTotal += 1
+
+	// Réinitialise le compteur et change l'état de l'eau après un certain nombre d'images
+	if f.WaterFrameTotal >= WaterFrameInterval {
+		f.WaterFrameTotal = 0
+		// Alterne l'état de l'eau entre vrai et faux
+		if f.WaterState {
+			f.WaterState = false
+		} else if !f.WaterState {
+			f.WaterState = true
+		}
+	}
 }
 
 // le sol est un quadrillage de tuiles d'herbe et de tuiles de désert

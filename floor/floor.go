@@ -15,6 +15,8 @@ type Floor struct {
 	fullContent          [][]int
 	quadtreeContent      quadtree.Quadtree
 	randomFloorGenerated bool
+	WaterFrameTotal      int
+	WaterState           bool
 }
 
 // types d'affichage du terrain disponibles
@@ -22,6 +24,7 @@ const (
 	GridFloor int = iota
 	FromFileFloor
 	QuadTreeFloor
+	WaterFrameInterval = 50
 )
 
 func (f *Floor) GetFullContent() [][]int {
