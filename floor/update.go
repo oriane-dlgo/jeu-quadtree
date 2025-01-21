@@ -17,6 +17,7 @@ func (f *Floor) Update(camXPos, camYPos int) {
 		width := configuration.Global.NumTileX * 2
 		height := configuration.Global.NumTileY * 2
 		soilTypes := 6
+		// Génère un terrain aléatoire et le stock dans fullContent et quadtreeContent
 		f.GenerateRandomFloor(width, height, soilTypes)
 	}
 

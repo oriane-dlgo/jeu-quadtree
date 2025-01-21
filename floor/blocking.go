@@ -8,15 +8,19 @@ import "gitlab.univ-nantes.fr/jezequel-l/quadtree/configuration"
 // sont bloquantes.
 func (f Floor) Blocking(characterXPos, characterYPos, camXPos, camYPos int) (blocking [4]bool) {
 
+	// Calcule les coordonnées relatives du personnage par rapport à la caméra.
 	relativeXPos := characterXPos - camXPos + configuration.Global.ScreenCenterTileX
 	relativeYPos := characterYPos - camYPos + configuration.Global.ScreenCenterTileY
 
+	// Si l'option BlockWater est activée, bloque également les cases d'eau (type de sol 5 et 6).
 	if configuration.Global.BlockWater {
 		blocking[0] = relativeYPos <= 0 || f.content[relativeYPos-1][relativeXPos] == -1 || f.content[relativeYPos-1][relativeXPos] == 5 || f.content[relativeYPos-1][relativeXPos] == 6
 		blocking[1] = relativeXPos >= configuration.Global.NumTileX-1 || f.content[relativeYPos][relativeXPos+1] == -1 || f.content[relativeYPos][relativeXPos+1] == 5 || f.content[relativeYPos][relativeXPos+1] == 6
 		blocking[2] = relativeYPos >= configuration.Global.NumTileY-1 || f.content[relativeYPos+1][relativeXPos] == -1 || f.content[relativeYPos+1][relativeXPos] == 5 || f.content[relativeYPos+1][relativeXPos] == 6
 		blocking[3] = relativeXPos <= 0 || f.content[relativeYPos][relativeXPos-1] == -1 || f.content[relativeYPos][relativeXPos-1] == 5 || f.content[relativeYPos][relativeXPos-1] == 6
 	}
+
+	// Si l'option BlockWater n'est pas activée, ne bloque que les cases de type -1.
 	if !configuration.Global.BlockWater {
 		blocking[0] = relativeYPos <= 0 || f.content[relativeYPos-1][relativeXPos] == -1
 		blocking[1] = relativeXPos >= configuration.Global.NumTileX-1 || f.content[relativeYPos][relativeXPos+1] == -1
